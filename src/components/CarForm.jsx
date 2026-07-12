@@ -238,27 +238,37 @@ export default function CarForm({ onSubmit, onCancel, initialCar }) {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isSubmitting) return;
     if (!validateForm()) return;
 
-    const featuresList = formData.featuresText
-      ? formData.featuresText
-          .split(",")
-          .map((f) => f.trim())
-          .filter((f) => f.length > 0)
-      : [];
+    setIsSubmitting(true);
+    try {
+      const featuresList = formData.featuresText
+        ? formData.featuresText
+            .split(",")
+            .map((f) => f.trim())
+            .filter((f) => f.length > 0)
+        : [];
 
-    const finalCarData = {
-      ...formData,
-      price: Number(formData.price),
-      mileage: Number(formData.mileage),
-      year: Number(formData.year),
-      features: featuresList,
-    };
-    delete finalCarData.featuresText;
+      const finalCarData = {
+        ...formData,
+        price: Number(formData.price),
+        mileage: Number(formData.mileage),
+        year: Number(formData.year),
+        features: featuresList,
+      };
+      delete finalCarData.featuresText;
 
-    onSubmit(finalCarData, imageBlobs);
+      await onSubmit(finalCarData, imageBlobs);
+    } catch (err) {
+      console.error("Submission error:", err);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -571,12 +581,21 @@ export default function CarForm({ onSubmit, onCancel, initialCar }) {
 
 
         <div className="form-actions">
-          <button type="button" className="btn-form-cancel" onClick={onCancel}>
+          <button 
+            type="button" 
+            className="btn-form-cancel" 
+            onClick={onCancel}
+            disabled={isSubmitting}
+          >
             Cancel
           </button>
-          <button type="submit" className="btn-form-submit">
-            <Plus size={18} weight="bold" />
-            <span>{initialCar ? "Update Listing" : "Post Listing"}</span>
+          <button 
+            type="submit" 
+            className="btn-form-submit"
+            disabled={isSubmitting}
+          >
+            <Plus size={18} weight="bold" style={{ display: isSubmitting ? "none" : "inline-block" }} />
+            <span>{isSubmitting ? "Submitting..." : (initialCar ? "Update Listing" : "Post Listing")}</span>
           </button>
         </div>
       </form>

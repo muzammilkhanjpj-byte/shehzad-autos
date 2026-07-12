@@ -1459,6 +1459,13 @@ h1, h2, h3, h4, h5, h6 {
   border-color: rgba(255, 255, 255, 0.2);
 }
 
+.btn-form-submit:disabled, .btn-form-cancel:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
 /* ==========================================================================
    FOOTER
    ========================================================================== */
