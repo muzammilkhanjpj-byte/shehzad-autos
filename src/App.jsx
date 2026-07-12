@@ -5,7 +5,7 @@ import CarDetailsModal from "./components/CarDetailsModal";
 import CarForm from "./components/CarForm";
 import Dashboard from "./components/Dashboard";
 import Auth from "./components/Auth";
-import { INITIAL_CARS } from "./data/mockData";
+// Mock data import removed — app uses Supabase data only
 import { supabase } from "./utils/supabaseClient";
 import { MagnifyingGlass, Funnel, ArrowClockwise, Crown, CircleNotch } from "@phosphor-icons/react";
 
@@ -92,12 +92,12 @@ export default function App() {
 
           setCars(resolvedCars);
         } else {
-          // Fallback to mock data if DB is connected but empty
-          setCars(INITIAL_CARS);
+          // Database is empty, show no cars
+          setCars([]);
         }
       } catch (error) {
-        console.error("Error fetching cars from Supabase, falling back to mock data:", error);
-        setCars(INITIAL_CARS);
+        console.error("Error fetching cars from Supabase:", error);
+        setCars([]);
       }
     };
     fetchCars();
