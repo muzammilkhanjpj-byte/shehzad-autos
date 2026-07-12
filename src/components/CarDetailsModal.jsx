@@ -36,9 +36,12 @@ export default function CarDetailsModal({ car, onClose }) {
   };
 
   const handleContact = () => {
-    let details = "";
-    if (car.ownerPhone && car.ownerPhone !== "+92") details += `\n📞 Phone: ${car.ownerPhone}`;
-    alert(`Starting inquiry with ${car.ownerName || "Seller"} regarding the ${car.year} ${car.make} ${car.model}.${details ? ` Contact details:${details}` : ""}`);
+    if (car.ownerPhone && car.ownerPhone.trim() !== "" && car.ownerPhone !== "+92") {
+      const cleanPhone = car.ownerPhone.replace(/[\s\-\(\)]/g, "");
+      window.location.href = `tel:${cleanPhone}`;
+    } else {
+      alert("No phone contact number is listed for this vehicle.");
+    }
   };
 
   return (
