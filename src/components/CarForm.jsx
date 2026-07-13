@@ -84,6 +84,22 @@ export default function CarForm({ onSubmit, onCancel, initialCar }) {
     }
   };
 
+  // Handler for text-only fields (no numbers allowed)
+  const handleTextOnly = (e) => {
+    const { name, value } = e.target;
+    const hasNumbers = /[0-9]/.test(value);
+    const cleanedValue = value.replace(/[0-9]/g, "");
+    setFormData((prev) => ({
+      ...prev,
+      [name]: cleanedValue,
+    }));
+    if (hasNumbers) {
+      setErrors((prev) => ({ ...prev, [name]: "Numbers are not allowed in this field" }));
+    } else if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: "" }));
+    }
+  };
+
   // Drag and Drop handlers
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -294,7 +310,7 @@ export default function CarForm({ onSubmit, onCancel, initialCar }) {
               type="text"
               name="make"
               value={formData.make}
-              onChange={handleChange}
+              onChange={handleTextOnly}
               placeholder="e.g. Porsche, Tesla, BMW"
               className="text-input"
             />
@@ -308,7 +324,7 @@ export default function CarForm({ onSubmit, onCancel, initialCar }) {
               type="text"
               name="model"
               value={formData.model}
-              onChange={handleChange}
+              onChange={handleTextOnly}
               placeholder="e.g. 911 Carrera S, Model S"
               className="text-input"
             />
@@ -414,10 +430,11 @@ export default function CarForm({ onSubmit, onCancel, initialCar }) {
               type="text"
               name="featuresText"
               value={formData.featuresText}
-              onChange={handleChange}
+              onChange={handleTextOnly}
               placeholder="e.g. Sport Chrono Package, Air Suspension, Heated Seats, AWD"
               className="text-input"
             />
+            {errors.featuresText && <span style={{ color: "#ef4444", fontSize: "12px" }}>{errors.featuresText}</span>}
           </div>
 
           <div className="filter-group font-group-full">
@@ -426,10 +443,11 @@ export default function CarForm({ onSubmit, onCancel, initialCar }) {
               id="description"
               name="description"
               value={formData.description}
-              onChange={handleChange}
+              onChange={handleTextOnly}
               placeholder="Describe the vehicle condition, history, maintenance, upgrades, etc."
               className="textarea-input"
             ></textarea>
+            {errors.description && <span style={{ color: "#ef4444", fontSize: "12px" }}>{errors.description}</span>}
           </div>
         </div>
 
