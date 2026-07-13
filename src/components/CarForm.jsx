@@ -277,7 +277,7 @@ export default function CarForm({ onSubmit, onCancel, initialCar }) {
         >
           <ArrowLeft size={16} />
         </button>
-        <h2>{initialCar ? "Edit Car Listing" : "List Your Car for Sale"}</h2>
+        <h2>{initialCar ? "Add New Car" : "List Your Car for Sale"}</h2>
       </div>
 
       <form onSubmit={handleSubmit}>

@@ -1,7 +1,8 @@
 import React from "react";
 import { 
   Car, Pencil, Trash, 
-  Check, Plus, SmileySad, PhoneCall 
+  Check, Plus, SmileySad, PhoneCall,
+  Gear, GasPump
 } from "@phosphor-icons/react";
 
 export default function Dashboard({ cars, onEditCar, onDeleteCar, onMarkSold, onMarkAvailable, onAddNewListing }) {
@@ -52,130 +53,216 @@ export default function Dashboard({ cars, onEditCar, onDeleteCar, onMarkSold, on
             </button>
           </div>
         ) : (
-          <div className="listings-table-container">
-            <table className="listings-table">
-              <thead>
-                <tr>
-                  <th>Vehicle</th>
-                  <th>Price</th>
-                  <th>Specs</th>
-                  <th>Seller</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {cars.map((car) => (
-                  <tr key={car.id}>
-                    <td>
-                      <div className="table-car-cell">
-                        <img 
-                          src={(car.images && car.images.length > 0 ? car.images[0] : null) || car.image || "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=800"} 
-                          alt={`${car.make} ${car.model}`}
-                          className="table-car-img"
-                          onError={(e) => {
-                            e.target.src = "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=800";
-                          }}
-                        />
-                        <div>
-                          <div className="table-car-name">{car.year} {car.make} {car.model}</div>
-                          <div className="table-car-meta">Color: {car.color || "N/A"} &bull; {car.condition}</div>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <div className="table-price-cell">{formatPrice(car.price)}</div>
-                    </td>
-                    <td>
-                      <div style={{ fontSize: "13px" }}>
-                        <div>{car.transmission}</div>
-                        <div style={{ color: "var(--color-text-muted)" }}>{car.fuelType}</div>
-                      </div>
-                    </td>
-                    <td>
-                      <div style={{ fontSize: "13px" }}>
-                        <div style={{ fontWeight: 500, color: "#fff" }}>{car.ownerName}</div>
-                        <div style={{ color: "var(--color-text-muted)", display: "flex", alignItems: "center", gap: "4px" }}>
-                          <PhoneCall size={12} />
-                          <span>{car.ownerPhone}</span>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      {car.status === "Sold" ? (
-                        <span style={{ 
-                          background: "var(--color-success-glow)", 
-                          color: "var(--color-success)", 
-                          border: "1px solid rgba(16, 185, 129, 0.3)",
-                          padding: "4px 8px",
-                          borderRadius: "10px",
-                          fontSize: "11px",
-                          fontWeight: 600,
-                          textTransform: "uppercase"
-                        }}>
-                          Sold
-                        </span>
-                      ) : (
-                        <span style={{ 
-                          background: "rgba(255, 255, 255, 0.03)", 
-                          color: "var(--color-text-secondary)", 
-                          border: "1px solid rgba(255, 255, 255, 0.08)",
-                          padding: "4px 8px",
-                          borderRadius: "10px",
-                          fontSize: "11px",
-                          fontWeight: 600,
-                          textTransform: "uppercase"
-                        }}>
-                          Available
-                        </span>
-                      )}
-                    </td>
-                    <td>
-                      <div className="table-actions-cell">
-                        {car.status !== "Sold" ? (
-                          <button 
-                            className="btn-table-action sold" 
-                            title="Mark as Sold"
-                            onClick={() => onMarkSold(car.id)}
-                          >
-                            <Check size={14} />
-                            <span style={{ marginLeft: "4px" }}>Sold</span>
-                          </button>
-                        ) : (
-                          <button 
-                            className="btn-table-action" 
-                            title="Revert to Available"
-                            onClick={() => onMarkAvailable(car.id)}
-                            style={{ border: "1px solid rgba(251, 191, 36, 0.3)", color: "#fbbf24" }}
-                          >
-                            <span style={{ marginLeft: "4px" }}>Available</span>
-                          </button>
-                        )}
-                        <button 
-                          className="btn-table-action edit" 
-                          title="Edit Listing"
-                          onClick={() => onEditCar(car)}
-                        >
-                          <Pencil size={14} />
-                        </button>
-                        <button 
-                          className="btn-table-action delete" 
-                          title="Delete Listing"
-                          onClick={() => {
-                            if (window.confirm(`Are you sure you want to remove the listing for ${car.year} ${car.make} ${car.model}?`)) {
-                              onDeleteCar(car.id);
-                            }
-                          }}
-                        >
-                          <Trash size={14} />
-                        </button>
-                      </div>
-                    </td>
+          <>
+            {/* === DESKTOP TABLE (hidden on mobile) === */}
+            <div className="listings-table-container dashboard-desktop-only">
+              <table className="listings-table">
+                <thead>
+                  <tr>
+                    <th>Vehicle</th>
+                    <th>Price</th>
+                    <th>Specs</th>
+                    <th>Seller</th>
+                    <th>Status</th>
+                    <th>Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {cars.map((car) => (
+                    <tr key={car.id}>
+                      <td>
+                        <div className="table-car-cell">
+                          <img 
+                            src={(car.images && car.images.length > 0 ? car.images[0] : null) || car.image || "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=800"} 
+                            alt={`${car.make} ${car.model}`}
+                            className="table-car-img"
+                            onError={(e) => {
+                              e.target.src = "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=800";
+                            }}
+                          />
+                          <div>
+                            <div className="table-car-name">{car.year} {car.make} {car.model}</div>
+                            <div className="table-car-meta">Color: {car.color || "N/A"} &bull; {car.condition}</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <div className="table-price-cell">{formatPrice(car.price)}</div>
+                      </td>
+                      <td>
+                        <div style={{ fontSize: "13px" }}>
+                          <div>{car.transmission}</div>
+                          <div style={{ color: "var(--color-text-muted)" }}>{car.fuelType}</div>
+                        </div>
+                      </td>
+                      <td>
+                        <div style={{ fontSize: "13px" }}>
+                          <div style={{ fontWeight: 500, color: "#fff" }}>{car.ownerName}</div>
+                          <div style={{ color: "var(--color-text-muted)", display: "flex", alignItems: "center", gap: "4px" }}>
+                            <PhoneCall size={12} />
+                            <span>{car.ownerPhone}</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        {car.status === "Sold" ? (
+                          <span style={{ 
+                            background: "var(--color-success-glow)", 
+                            color: "var(--color-success)", 
+                            border: "1px solid rgba(16, 185, 129, 0.3)",
+                            padding: "4px 8px",
+                            borderRadius: "10px",
+                            fontSize: "11px",
+                            fontWeight: 600,
+                            textTransform: "uppercase"
+                          }}>
+                            Sold
+                          </span>
+                        ) : (
+                          <span style={{ 
+                            background: "rgba(255, 255, 255, 0.03)", 
+                            color: "var(--color-text-secondary)", 
+                            border: "1px solid rgba(255, 255, 255, 0.08)",
+                            padding: "4px 8px",
+                            borderRadius: "10px",
+                            fontSize: "11px",
+                            fontWeight: 600,
+                            textTransform: "uppercase"
+                          }}>
+                            Available
+                          </span>
+                        )}
+                      </td>
+                      <td>
+                        <div className="table-actions-cell">
+                          {car.status !== "Sold" ? (
+                            <button 
+                              className="btn-table-action sold" 
+                              title="Mark as Sold"
+                              onClick={() => onMarkSold(car.id)}
+                            >
+                              <Check size={14} />
+                              <span style={{ marginLeft: "4px" }}>Sold</span>
+                            </button>
+                          ) : (
+                            <button 
+                              className="btn-table-action" 
+                              title="Revert to Available"
+                              onClick={() => onMarkAvailable(car.id)}
+                              style={{ border: "1px solid rgba(251, 191, 36, 0.3)", color: "#fbbf24" }}
+                            >
+                              <span style={{ marginLeft: "4px" }}>Available</span>
+                            </button>
+                          )}
+                          <button 
+                            className="btn-table-action edit" 
+                            title="Edit Listing"
+                            onClick={() => onEditCar(car)}
+                          >
+                            <Pencil size={14} />
+                          </button>
+                          <button 
+                            className="btn-table-action delete" 
+                            title="Delete Listing"
+                            onClick={() => {
+                              if (window.confirm(`Are you sure you want to remove the listing for ${car.year} ${car.make} ${car.model}?`)) {
+                                onDeleteCar(car.id);
+                              }
+                            }}
+                          >
+                            <Trash size={14} />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* === MOBILE CARD VIEW (hidden on desktop) === */}
+            <div className="dashboard-mobile-cards dashboard-mobile-only">
+              {cars.map((car) => (
+                <div className="dash-card" key={car.id}>
+                  {/* Card Header: Image + Info */}
+                  <div className="dash-card-header">
+                    <img 
+                      src={(car.images && car.images.length > 0 ? car.images[0] : null) || car.image || "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=800"} 
+                      alt={`${car.make} ${car.model}`}
+                      className="dash-card-img"
+                      onError={(e) => {
+                        e.target.src = "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=800";
+                      }}
+                    />
+                    <div className="dash-card-info">
+                      <div className="dash-card-name">{car.year} {car.make} {car.model}</div>
+                      <div className="dash-card-price">{formatPrice(car.price)}</div>
+                      <div className="dash-card-meta">
+                        {car.status === "Sold" ? (
+                          <span className="dash-status-badge sold">Sold</span>
+                        ) : (
+                          <span className="dash-status-badge available">Available</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Card Details Row */}
+                  <div className="dash-card-details">
+                    <div className="dash-detail-chip">
+                      <Gear size={13} />
+                      <span>{car.transmission}</span>
+                    </div>
+                    <div className="dash-detail-chip">
+                      <GasPump size={13} />
+                      <span>{car.fuelType}</span>
+                    </div>
+                    <div className="dash-detail-chip">
+                      <span>{car.condition}</span>
+                    </div>
+                  </div>
+
+                  {/* Card Actions */}
+                  <div className="dash-card-actions">
+                    {car.status !== "Sold" ? (
+                      <button 
+                        className="dash-action-btn dash-action-sold"
+                        onClick={() => onMarkSold(car.id)}
+                      >
+                        <Check size={14} weight="bold" />
+                        <span>Mark Sold</span>
+                      </button>
+                    ) : (
+                      <button 
+                        className="dash-action-btn dash-action-available"
+                        onClick={() => onMarkAvailable(car.id)}
+                      >
+                        <span>Revert</span>
+                      </button>
+                    )}
+                    <button 
+                      className="dash-action-btn dash-action-edit"
+                      onClick={() => onEditCar(car)}
+                    >
+                      <Pencil size={14} />
+                      <span>Edit</span>
+                    </button>
+                    <button 
+                      className="dash-action-btn dash-action-delete"
+                      onClick={() => {
+                        if (window.confirm(`Are you sure you want to remove the listing for ${car.year} ${car.make} ${car.model}?`)) {
+                          onDeleteCar(car.id);
+                        }
+                      }}
+                    >
+                      <Trash size={14} />
+                      <span>Delete</span>
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
         )}
       </div>
     </div>

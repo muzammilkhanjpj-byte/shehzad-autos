@@ -1257,6 +1257,197 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 8px;
 }
 
+/* --- Dashboard Desktop / Mobile Toggle --- */
+.dashboard-mobile-only {
+  display: none;
+}
+
+.dashboard-desktop-only {
+  display: block;
+}
+
+/* ==========================================================================
+   DASHBOARD MOBILE CARD VIEW
+   ========================================================================== */
+
+.dashboard-mobile-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dash-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: var(--transition-fast);
+}
+
+.dash-card:hover {
+  border-color: rgba(239, 68, 68, 0.15);
+}
+
+.dash-card-header {
+  display: flex;
+  gap: 14px;
+  padding: 14px;
+  align-items: center;
+}
+
+.dash-card-img {
+  width: 80px;
+  height: 56px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+}
+
+.dash-card-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.dash-card-name {
+  font-weight: 700;
+  font-size: 15px;
+  color: #fff;
+  line-height: 1.2;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dash-card-price {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--color-pink);
+  margin-bottom: 6px;
+}
+
+.dash-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dash-status-badge {
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dash-status-badge.available {
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--color-text-secondary);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.dash-status-badge.sold {
+  background: var(--color-success-glow);
+  color: var(--color-success);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.dash-card-details {
+  display: flex;
+  gap: 8px;
+  padding: 0 14px 12px 14px;
+  flex-wrap: wrap;
+}
+
+.dash-detail-chip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--color-text-muted);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 4px 10px;
+  border-radius: 14px;
+}
+
+.dash-card-actions {
+  display: flex;
+  gap: 8px;
+  padding: 10px 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.dash-action-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 8px 6px;
+  border-radius: 10px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--color-text-secondary);
+}
+
+.dash-action-btn:hover {
+  transform: translateY(-1px);
+}
+
+.dash-action-sold {
+  color: var(--color-success);
+  border-color: rgba(16, 185, 129, 0.2);
+  background: rgba(16, 185, 129, 0.06);
+}
+
+.dash-action-sold:hover {
+  background: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
+.dash-action-available {
+  color: #fbbf24;
+  border-color: rgba(251, 191, 36, 0.2);
+  background: rgba(251, 191, 36, 0.06);
+}
+
+.dash-action-available:hover {
+  background: rgba(251, 191, 36, 0.12);
+  border-color: rgba(251, 191, 36, 0.35);
+}
+
+.dash-action-edit {
+  color: var(--color-pink);
+  border-color: rgba(239, 68, 68, 0.15);
+  background: rgba(239, 68, 68, 0.04);
+}
+
+.dash-action-edit:hover {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.dash-action-delete {
+  color: #f87171;
+  border-color: rgba(248, 113, 113, 0.15);
+  background: rgba(248, 113, 113, 0.04);
+}
+
+.dash-action-delete:hover {
+  background: rgba(248, 113, 113, 0.1);
+  border-color: rgba(248, 113, 113, 0.3);
+}
+
 /* ==========================================================================
    CAR FORM & FORM STYLES (ADD & EDIT)
    ========================================================================== */
@@ -2109,6 +2300,47 @@ h1, h2, h3, h4, h5, h6 {
     max-width: 96vw;
     max-height: 80vh;
     border-radius: var(--radius-sm);
+  }
+
+  /* --- Dashboard: Switch to mobile card view --- */
+  .dashboard-desktop-only {
+    display: none;
+  }
+
+  .dashboard-mobile-only {
+    display: block;
+  }
+
+  .dashboard-listings-card {
+    padding: 16px;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .dashboard-header-title {
+    font-size: 20px;
+  }
+
+  .btn-add-listing-cta {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .metrics-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .metric-card {
+    padding: 18px;
+  }
+
+  .metric-number {
+    font-size: 26px;
   }
 }
 
