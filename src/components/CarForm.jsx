@@ -131,11 +131,6 @@ export default function CarForm({ onSubmit, onCancel, initialCar }) {
         return;
       }
 
-      // 2. Validate Size (Max 2MB)
-      if (file.size > 2 * 1024 * 1024) {
-        setErrors((prev) => ({ ...prev, images: `"${file.name}" is too large. Max size is 2MB.` }));
-        return;
-      }
 
       // 3. Process with Canvas (Async resize, 16:9 center-crop, and compress)
       const reader = new FileReader();
@@ -532,7 +527,7 @@ export default function CarForm({ onSubmit, onCancel, initialCar }) {
                 Drag & drop vehicle photo here, or <span style={{ color: "var(--color-pink)", textDecoration: "underline" }}>browse files</span>
               </div>
               <div className="upload-text-sub">
-                Supports PNG, JPG, or WebP format (Max. 2MB per file)
+                Supports PNG, JPG, or WebP format
               </div>
             </div>
           )}
